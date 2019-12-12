@@ -28,18 +28,18 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.vue$/i,
+        test: /\.vue$/,
         loader: 'vue-loader',
       },
       {
-        test: /\.css$/i,
+        test: /\.css$/,
         use: [
           'vue-style-loader',
           'css-loader',
         ],
       },
       {
-        test: /\.scss$/i,
+        test: /\.scss$/,
         use: [
           'vue-style-loader',
           'css-loader',
@@ -47,12 +47,25 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/i,
+        test: /\.(png|svg|jpg|gif)$/,
         use: [
           'file-loader',
         ],
       },
-    ],
+      {
+        test: /\.pug$/,
+        oneOf: [
+          // this applies to `<template lang="pug">` in Vue components
+          {
+            resourceQuery: /^\?vue/,
+            use: ['pug-plain-loader']
+          },
+          // this applies to pug imports inside JavaScript
+          {
+            use: ['raw-loader', 'pug-plain-loader']
+          }
+        ]
+      }    ],
   },
   optimization: {
     splitChunks: {
@@ -61,7 +74,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' webpack 1 用
+      'vue$': 'vue/dist/vue.esm.js'
     }
   },
 }
