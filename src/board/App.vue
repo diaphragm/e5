@@ -4,7 +4,7 @@ div#app
 </template>
 
 <script>
-import ConfigManager from "./lib/ConfigManager.js"
+import ConfigManager from "../lib/ConfigManager.js"
 
 export default {
   data: function() {
