@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './Index.vue'
+import App from './AppThreads.vue'
 
 new Vue({
   el: '#app',

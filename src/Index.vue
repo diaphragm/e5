@@ -1,11 +1,21 @@
 <template lang="pug">
 div#app
   h1 Hello
+  <Boards v-bind:config="config" />
 </template>
 
 <script>
+import ConfigManager from "./lib/ConfigManager.js"
+import Boards from "./components/Boards.vue"
+
 export default {
+  data: function() {
+    return {
+      config: new ConfigManager()
+    }
+  },
   components: {
+    Boards
   }
 }
 </script>
@@ -22,7 +32,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: red;
 }
 
 h1 {
