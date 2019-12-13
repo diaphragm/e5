@@ -12,6 +12,7 @@ module.exports = {
   },
   entry: {
     app: './src/index.js',
+    'board/app': './src/board/index.js'
   },
   output: {
     filename: '[name].bundle.js',
@@ -20,8 +21,14 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin,
     new HtmlWebpackPlugin({
-      title: 'Vue',
-      template: './src/index.html'
+      chunks: ['app'],
+      template: './src/index.html',
+      filename: 'index.html',
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ['board/app'],
+      template: './src/board/index.html',
+      filename: 'board/index.html',
     }),
     new VueLoaderPlugin(),
   ],
@@ -36,6 +43,21 @@ module.exports = {
         use: [
           'vue-style-loader',
           'css-loader',
+        ],
+      },
+      {
+        test: /\.sass$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                indentedSyntax: true
+              }
+            }
+          }
         ],
       },
       {
@@ -66,11 +88,6 @@ module.exports = {
           }
         ]
       }    ],
-  },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
   },
   resolve: {
     alias: {
