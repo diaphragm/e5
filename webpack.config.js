@@ -12,7 +12,8 @@ module.exports = {
   },
   entry: {
     app: './src/index.js',
-    'board/app': './src/board/index.js'
+    'board/app': './src/board/index.js',
+    'thread/app': './src/thread/index.js',
   },
   output: {
     filename: '[name].bundle.js',
@@ -29,6 +30,11 @@ module.exports = {
       chunks: ['board/app'],
       template: './src/board/index.html',
       filename: 'board/index.html',
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ['thread/app'],
+      template: './src/thread/index.html',
+      filename: 'thread/index.html',
     }),
     new VueLoaderPlugin(),
   ],
@@ -90,6 +96,10 @@ module.exports = {
       }    ],
   },
   resolve: {
+    modules: [
+      path.resolve(__dirname, 'src'),
+      'node_modules',
+    ],
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     }
