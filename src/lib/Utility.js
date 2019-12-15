@@ -12,3 +12,8 @@ export const getQueryParameters = () => {
 
   return ret
 }
+
+export const unescapeHTML = (text) => {
+  const doc = (new DOMParser()).parseFromString(text, 'text/html')
+  return doc.documentElement.textContent
+}

@@ -1,14 +1,8 @@
 <template lang="pug">
 div#app
-  h1 {{表示}}
+  h1 {{ name }}
   div.comments(v-for="comment in comments")
-    div.comment
-      div.comment-header
-        span {{comment.number }}
-        span {{ comment.name }}
-        span [{{ comment.mail }}]
-        span {{ comment.id }}
-      div.comment-body {{ comment.message }}
+    Comment(:comments="comments" :number="comment.number")
 </template>
 
 <script>
@@ -16,6 +10,8 @@ import * as Util from "lib/Utility.js"
 import ConfigManager from "lib/ConfigManager.js"
 import AbstractBBS from "lib/AbstractBBS"
 const bbs = new AbstractBBS
+
+import Comment from 'components/Comment.vue'
 
 export default {
   data: function() {
@@ -25,10 +21,12 @@ export default {
       subdomain: "",
       board: "",
       dat: "",
+      name: "",
       comments: []
     }
   },
   components: {
+    Comment
   },
   mounted: async function() {
     let query = Util.getQueryParameters()
@@ -37,12 +35,15 @@ export default {
     let board = query['board']
     let dat = query['dat']
 
-    let comments = await bbs.getCache(domain, subdomain, board, dat)
+    let data = await bbs.getCache(domain, subdomain, board, dat)
+    let thread = data['thread']
+    let comments = data['comments']
 
     this.domain = domain
     this.subdomain = subdomain
     this.board = board
     this.dat = dat
+    this.name = thread['name']
     this.comments = comments
   },
   methods: {
@@ -57,8 +58,6 @@ export default {
     }
   }
 }
-
-console.log(Util.getQueryParameters())
 </script>
 
 <style lang="scss">
@@ -78,18 +77,4 @@ console.log(Util.getQueryParameters())
 h1 {
   text-align: center;
 }
-
-.comment {
-  border: solid 1px;
-  margin: 1em;
-}
-
-.comment-header {
-  background-color: lightgray;
-
-  span{
-    margin-left: 1em;
-  }
-}
-
 </style>

@@ -28,7 +28,9 @@ export default {
     let query = Util.getQueryParameters()
     let domain = query['domain']
     let board = query['board']
-    let threads = await bbs.getThreads(domain, board)
+    let data = await bbs.getThreads(domain, board)
+    let threads = data['threads']
+
     this.domain = domain
     this.board = board
     this.threads = threads
@@ -45,8 +47,6 @@ export default {
     }
   }
 }
-
-console.log(Util.getQueryParameters())
 </script>
 
 <style lang="scss">

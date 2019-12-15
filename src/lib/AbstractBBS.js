@@ -1,3 +1,5 @@
+import { unescapeHTML } from 'lib/Utility.js'
+
 export default class AbstractBBS {
   constructor(config) {
     // 各APIはitest互換のjsonを返す
@@ -20,7 +22,10 @@ export default class AbstractBBS {
 
     let res = await fetch(url, { mode: 'cors' })
     let data = await res.json()
-    let threads = data['threads'].map((thread) => {
+
+    let ret = {}
+    ret['count'] = data['total_count']
+    ret['threads'] = data['threads'].map((thread) => {
       let path = thread[3].split('/')
       return {
         subdomain: thread[2],
@@ -31,7 +36,7 @@ export default class AbstractBBS {
       }
     })
 
-    return threads
+    return ret
   }
 
   async getCache(domain, subdomain, board, dat) {
@@ -43,17 +48,30 @@ export default class AbstractBBS {
 
     let res = await fetch(url, { mode: 'cors' })
     let data = await res.json()
-    let comments = data['comments'].map((comment) => {
+
+    let thread = data['thread']
+    let path = thread[3].split('/')
+
+    let ret = {}
+    ret['count'] = data['total_count']
+    ret['thread'] = {
+      subdomain: thread[2],
+      board: path[0],
+      dat: path[1],
+      name: thread[5],
+      count: thread[1]
+    }
+    ret['comments'] = data['comments'].map((comment) => {
       return {
         number: comment[0],
         name: comment[1],
         mail: comment[2],
         date: comment[3], // unixtime
         id: comment[4],
-        message: comment[6]
+        message: unescapeHTML(comment[6].replace(/ <br> /g, '\n'))
       }
     })
 
-    return comments
+    return ret
   }
 }
