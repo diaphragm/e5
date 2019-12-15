@@ -6,6 +6,8 @@ div#app
 </template>
 
 <script>
+document.title = "スレッド表示"
+
 import * as Util from "lib/Utility.js"
 import ConfigManager from "lib/ConfigManager.js"
 import AbstractBBS from "lib/AbstractBBS"

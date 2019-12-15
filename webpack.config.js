@@ -23,17 +23,17 @@ module.exports = {
     new CleanWebpackPlugin,
     new HtmlWebpackPlugin({
       chunks: ['app'],
-      template: './src/index.html',
+      template: './src/index.template.html',
       filename: 'index.html',
     }),
     new HtmlWebpackPlugin({
       chunks: ['board/app'],
-      template: './src/board/index.html',
+      template: './src/index.template.html',
       filename: 'board/index.html',
     }),
     new HtmlWebpackPlugin({
       chunks: ['thread/app'],
-      template: './src/thread/index.html',
+      template: './src/index.template.html',
       filename: 'thread/index.html',
     }),
     new VueLoaderPlugin(),

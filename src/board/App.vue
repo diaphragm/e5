@@ -8,6 +8,8 @@ div#app
 </template>
 
 <script>
+document.title = "スレ一覧"
+
 import * as Util from "lib/Utility.js"
 import ConfigManager from "lib/ConfigManager.js"
 import AbstractBBS from "lib/AbstractBBS"

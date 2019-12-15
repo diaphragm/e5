@@ -5,6 +5,8 @@ div#app
 </template>
 
 <script>
+document.title = "e5"
+
 import ConfigManager from "./lib/ConfigManager.js"
 import Boards from "./components/Boards.vue"
 
