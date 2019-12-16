@@ -1,8 +1,15 @@
 <template lang="pug">
 div#app
   h1 {{ name }}
-  div.comments(v-for="comment in comments")
-    Comment(:comments="comments" :number="comment.number")
+  div.tools
+    button(@click="reload") Reload
+  div.comments
+    div.comment-container(v-for="comment in comments" :key="comment.number")
+      Comment(:comments="comments" :number="comment.number" )
+      div.read(v-if="comment.number == read")
+        hr
+        span ここまで読んだ
+    div.comment-dummy
 </template>
 
 <script>
@@ -13,6 +20,7 @@ import ConfigManager from "lib/ConfigManager.js"
 import AbstractBBS from "lib/AbstractBBS"
 const bbs = new AbstractBBS
 
+import Vue from 'vue'
 import Comment from 'components/Comment.vue'
 
 export default {
@@ -25,7 +33,8 @@ export default {
       dat: "",
       name: "",
       comments: [],
-      thread: {}
+      read: 1,
+      intersectings: {}
     }
   },
   components: {
@@ -50,16 +59,31 @@ export default {
     this.comments = comments
 
     document.title = `e5 - ${this.name}`
+
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        // FIX: 生ElementからVueComponentを取得するの気持ち悪い
+        let number = entry.target.__vue__.number
+        // Vue.set(this.intersectings, number, entry.isIntersecting)
+        if(entry.isIntersecting) {
+          this.read = Math.max(this.read, number)
+        }
+      })
+    }, {
+      // 真ん中を閾値にするために-50%にしたけど負の値にしていいのか謎
+      rootMargin: '-50% 0px -50% 0px'
+    })
+  },
+  updated: function() {
+    this.observer.disconnect()
+    document.querySelectorAll('.comment').forEach((elem) => {
+      this.observer.observe(elem)
+    })
   },
   methods: {
-    createQuery(thread) {
-      let queries = []
-      queries.push(`domain=${encodeURIComponent(this.domain)}`)
-      queries.push(`subdomain=${encodeURIComponent(thread.subdomain)}`)
-      queries.push(`board=${encodeURIComponent(thread.board)}`)
-      queries.push(`dat=${encodeURIComponent(thread.dat)}`)
-
-      return queries.join('&')
+    reload: async function() {
+      let data = await bbs.reloadCache(this.domain, this.subdomain, this.board, this.dat)
+      this.comments = data['comments']
     }
   }
 }
@@ -81,5 +105,9 @@ export default {
 
 h1 {
   text-align: center;
+}
+
+.comment-dummy {
+  height: 50vh;
 }
 </style>

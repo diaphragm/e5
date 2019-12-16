@@ -1,5 +1,5 @@
 <template lang="pug">
-div.comment(:id="comment.number")
+div.comment(:id="comment.number" v-if="comment")
   div.header
     span {{ comment.number }}
     span {{ comment.name }}
@@ -20,12 +20,13 @@ export default {
   computed: {
     comment: function() {
       // TODO: 見つからなかったときのエラー処理
+      // FIXME: ↑ v-ifで非表示にした。いまいち？
       return this.comments.find(c => c.number == this.number)
     },
     // 動的にtemplateを生成するためにコンポーネントに切り分けてcomputedで呼び出す
     CommentMessage: function() {
       // templateの生成
-      const reRefer = /(&gt;|＞){2}[0-9０-９]+/g // escapeHTMLされたあとなので&gt;
+      const reRefer = /(&gt;|＞){2}[0-9０-９][,\-ｰ0-9０-９]*/g // escapeHTMLされたあとなので&gt;
       const reUrl = /https?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?/g
       const reImageUrl = /https?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?\.(jpe?g|png|gif|svg)/g
 
@@ -36,12 +37,12 @@ export default {
       tmp = escapeHTML(tmp)
       tmp = tmp.replace(/\n/g, '<br>')
       tmp = tmp.replace(reRefer, '<Popup refer="$&" :comments="comments"></Popup>')
-      tmp = tmp.replace(reUrl, '<a href="$&">$&</a>')
+      tmp = tmp.replace(reUrl, '<a href="$&" target="_blank" rel="noopener noreferrer">$&</a>')
 
       // サムネくっつける
       if(images) {
         tmp += '<div class="thumbnails">'
-        tmp += images.map(url => `<a href="${url}"><img class="thumbnail" src="${url}" /></a>`).join('')
+        tmp += images.map(url => `<a href="${url}" target="_blank" rel="noopener noreferrer"><img class="thumbnail" src="${url}" /></a>`).join('')
         tmp += '</div>'
       }
 

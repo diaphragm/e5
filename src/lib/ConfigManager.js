@@ -28,17 +28,8 @@ export default class ConfigManager {
     localStorage.setItem('boards', JSON.stringify(this._boards))
   }
 
-  get logs() {
-    return this._logs
-  }
-  set logs(val) {
-    this._logs = val
-    console.log("CM.js/logs", this._logs)
-    localStorage.setItem('logs', JSON.stringify(this._logs))
-  }
-
   getLog(board, dat) {
-    let logs = this.logs
+    let logs = this._logs
 
     if(logs[board]) {
       return logs[board][dat]
@@ -47,16 +38,18 @@ export default class ConfigManager {
     }
   }
   setLog(board, dat, data) {
-    let logs = this.logs
+    let logs = this._logs
 
     if (logs[board]) {
       logs[board][dat] = data
-      this.logs = logs
     } else {
       logs[board] = {}
-      this.logs = logs
-      this.setLog(board, dat, data)
+      logs[board][dat] = data
     }
+
+    this._logs = logs
+    console.log("CM.js/logs", this._logs)
+    localStorage.setItem('logs', JSON.stringify(this._logs))
   }
 
   clear() {

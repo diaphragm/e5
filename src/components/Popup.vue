@@ -26,14 +26,16 @@ export default {
     numbers: function() {
       let str = toHalfWidth(this.refer)
 
-      let m = str.match(/(\d+)-(\d+)/)
-      // if(m) {
-      //   let s = m[1]
-      //   let e = m[2]
-      //   return Array(e-s).fill(0).map((x, i) => s + i)
-      // }
-      // とりあえず
-      return this.refer.match(/\d+/g)
+      // >>10-20 みたいなパターン
+      let m = str.match(/(\d+)[-ｰ](\d+)/)
+      if(m) {
+        let s = +m[1]
+        let e = +m[2]
+        return Array(e-s+1).fill(0).map((x, i) => s + i)
+      }
+
+      // >>10,15,20 みたいなパターン
+      return str.match(/\d+/g)
     },
     jumpTo: function() {
       return `#${this.numbers[0]}`

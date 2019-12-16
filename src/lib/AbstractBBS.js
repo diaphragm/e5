@@ -12,6 +12,7 @@ export default class AbstractBBS {
   }
 
   async getBoards() {
+
     let url = this.boardsUrl
     let res = await fetch(url, { mode: 'cors' })
     let data = await res.json()
