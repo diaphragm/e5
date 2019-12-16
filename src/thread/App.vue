@@ -13,11 +13,11 @@ div#app
 </template>
 
 <script>
-document.title = "e5 - Viewer"
+document.title = 'e5 - Viewer'
 
-import * as Util from "lib/Utility.js"
-import ConfigManager from "lib/ConfigManager.js"
-import AbstractBBS from "lib/AbstractBBS"
+import * as Util from 'lib/Utility.js'
+import ConfigManager from 'lib/ConfigManager.js'
+import AbstractBBS from 'lib/AbstractBBS'
 const bbs = new AbstractBBS
 
 import Vue from 'vue'
@@ -27,11 +27,11 @@ export default {
   data: function() {
     return {
       config: new ConfigManager(),
-      domain: "",
-      subdomain: "",
-      board: "",
-      dat: "",
-      name: "",
+      domain: '',
+      subdomain: '',
+      board: '',
+      dat: '',
+      name: '',
       comments: [],
       read: 1,
       intersectings: {}

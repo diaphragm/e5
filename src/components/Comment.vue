@@ -4,6 +4,8 @@ div.comment(:id="comment.number" v-if="comment")
     span {{ comment.number }}
     span {{ comment.name }}
     span [{{ comment.mail }}]
+    span {{ date }}
+    span {{ comment.date }}
     span {{ comment.id }}
   component(:is="CommentMessage" :comments="comments" :number="number")
 </template>
@@ -22,6 +24,10 @@ export default {
       // TODO: 見つからなかったときのエラー処理
       // FIXME: ↑ v-ifで非表示にした。いまいち？
       return this.comments.find(c => c.number == this.number)
+    },
+    date: function() {
+      let date = new Date(Number(this.comment.date)*1000)
+      return date.toLocaleString('ja-JP')
     },
     // 動的にtemplateを生成するためにコンポーネントに切り分けてcomputedで呼び出す
     CommentMessage: function() {

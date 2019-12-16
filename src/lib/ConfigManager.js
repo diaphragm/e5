@@ -2,20 +2,29 @@
 
 export default class ConfigManager {
   constructor() {
+    // 設定
     if (localStorage.config) {
       this._config = JSON.parse(localStorage.getItem('config'))
     } else {
       this._config = {}
     }
+    // 板情報
     if (localStorage.boards) {
       this._boards = JSON.parse(localStorage.getItem('boards'))
     } else {
       this._boards = {}
     }
+    // 既読履歴など
     if (localStorage.logs) {
       this._logs = JSON.parse(localStorage.getItem('logs'))
     } else {
       this._logs = {}
+    }
+    // スレのキャッシュ
+    if (localStorage.cache) {
+      this._cache = JSON.parse(localStorage.getItem('cache'))
+    } else {
+      this._cache = {}
     }
   }
 
@@ -28,28 +37,28 @@ export default class ConfigManager {
     localStorage.setItem('boards', JSON.stringify(this._boards))
   }
 
-  getLog(board, dat) {
-    let logs = this._logs
+  getCache(board, dat) {
+    let cache = this._cache
 
-    if(logs[board]) {
-      return logs[board][dat]
+    if(cache[board]) {
+      return cache[board][dat]
     } else {
       return undefined
     }
   }
-  setLog(board, dat, data) {
-    let logs = this._logs
+  setCache(board, dat, data) {
+    let cache = this._cache
 
-    if (logs[board]) {
-      logs[board][dat] = data
+    if (cache[board]) {
+      cache[board][dat] = data
     } else {
-      logs[board] = {}
-      logs[board][dat] = data
+      cache[board] = {}
+      cache[board][dat] = data
     }
 
-    this._logs = logs
-    console.log("CM.js/logs", this._logs)
-    localStorage.setItem('logs', JSON.stringify(this._logs))
+    this._cache = cache
+    console.log("CM.js/cache", this._cache)
+    localStorage.setItem('cache', JSON.stringify(this._cache))
   }
 
   clear() {

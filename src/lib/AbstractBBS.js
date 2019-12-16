@@ -44,7 +44,7 @@ export default class AbstractBBS {
   }
 
   async getCache(domain, subdomain, board, dat) {
-    let data = config.getLog(board, dat)
+    let data = config.getCache(board, dat)
     if(data) {
       return data
     } else {
@@ -54,7 +54,7 @@ export default class AbstractBBS {
 
   async reloadCache(domain, subdomain, board, dat) {
     let data = await this.fetchCache(domain, subdomain, board, dat)
-    config.setLog(board, dat, data)
+    config.setCache(board, dat, data)
     return data
   }
 
