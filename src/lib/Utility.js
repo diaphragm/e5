@@ -13,7 +13,22 @@ export const getQueryParameters = () => {
   return ret
 }
 
-export const unescapeHTML = (text) => {
-  const doc = (new DOMParser()).parseFromString(text, 'text/html')
-  return doc.documentElement.textContent
+export const escapeHTML = (str) => {
+  return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;')
+}
+
+export const unescapeHTML = (str) => {
+  return str.replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+}
+
+export const toHalfWidth = (str) => {
+  return str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (c) {
+    return String.fromCharCode(c.charCodeAt(0) - 0xFEE0);
+  })
 }

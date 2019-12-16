@@ -6,8 +6,10 @@ span
 </template>
 
 <script>
+import { toHalfWidth } from 'lib/Utility.js'
+
 export default {
-  // referには 1-50とか1,2,3とか受けられるようにする
+  // referには >>1-50とか＞＞1,2,3とか受けられるようにする
   props: ['comments', 'refer'],
   data: function() {
     return {
@@ -22,6 +24,14 @@ export default {
   },
   computed: {
     numbers: function() {
+      let str = toHalfWidth(this.refer)
+
+      let m = str.match(/(\d+)-(\d+)/)
+      // if(m) {
+      //   let s = m[1]
+      //   let e = m[2]
+      //   return Array(e-s).fill(0).map((x, i) => s + i)
+      // }
       // とりあえず
       return this.refer.match(/\d+/g)
     },

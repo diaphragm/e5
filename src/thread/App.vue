@@ -6,7 +6,7 @@ div#app
 </template>
 
 <script>
-document.title = "スレッド表示"
+document.title = "e5 - Viewer"
 
 import * as Util from "lib/Utility.js"
 import ConfigManager from "lib/ConfigManager.js"
@@ -24,7 +24,8 @@ export default {
       board: "",
       dat: "",
       name: "",
-      comments: []
+      comments: [],
+      thread: {}
     }
   },
   components: {
@@ -47,6 +48,8 @@ export default {
     this.dat = dat
     this.name = thread['name']
     this.comments = comments
+
+    document.title = `e5 - ${this.name}`
   },
   methods: {
     createQuery(thread) {
@@ -68,7 +71,7 @@ export default {
 }
 
 #app {
-  max-width: 400px;
+  max-width: 800px;
   margin: 0 auto;
   line-height: 1.4;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

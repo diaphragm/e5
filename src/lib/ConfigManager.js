@@ -24,13 +24,39 @@ export default class ConfigManager {
   }
   set boards(val) {
     this._boards = val
-    console.log("CM.js", this._boards)
+    console.log("CM.js/boards", this._boards)
     localStorage.setItem('boards', JSON.stringify(this._boards))
   }
 
-  save() {
-    console.log(this.config)
-    localStorage.setItem('logs', JSON.stringify(this.logs))
+  get logs() {
+    return this._logs
+  }
+  set logs(val) {
+    this._logs = val
+    console.log("CM.js/logs", this._logs)
+    localStorage.setItem('logs', JSON.stringify(this._logs))
+  }
+
+  getLog(board, dat) {
+    let logs = this.logs
+
+    if(logs[board]) {
+      return logs[board][dat]
+    } else {
+      return undefined
+    }
+  }
+  setLog(board, dat, data) {
+    let logs = this.logs
+
+    if (logs[board]) {
+      logs[board][dat] = data
+      this.logs = logs
+    } else {
+      logs[board] = {}
+      this.logs = logs
+      this.setLog(board, dat, data)
+    }
   }
 
   clear() {

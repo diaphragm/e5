@@ -1,4 +1,7 @@
 import { unescapeHTML } from 'lib/Utility.js'
+import ConfigManager from 'lib/ConfigManager.js'
+
+const config = new ConfigManager()
 
 export default class AbstractBBS {
   constructor(config) {
@@ -40,6 +43,21 @@ export default class AbstractBBS {
   }
 
   async getCache(domain, subdomain, board, dat) {
+    let data = config.getLog(board, dat)
+    if(data) {
+      return data
+    } else {
+      return this.reloadCache(domain, subdomain, board, dat)
+    }
+  }
+
+  async reloadCache(domain, subdomain, board, dat) {
+    let data = await this.fetchCache(domain, subdomain, board, dat)
+    config.setLog(board, dat, data)
+    return data
+  }
+
+  async fetchCache(domain, subdomain, board, dat) {
     let url = this.cacheUrl
     url = url.replace('{{domain}}', domain)
     url = url.replace('{{subdomain}}', subdomain)
@@ -72,6 +90,7 @@ export default class AbstractBBS {
       }
     })
 
+    console.log('fetchCache', ret)
     return ret
   }
 }

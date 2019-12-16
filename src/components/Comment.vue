@@ -9,6 +9,7 @@ div.comment(:id="comment.number")
 </template>
 
 <script>
+import { escapeHTML } from 'lib/Utility.js'
 import Popup from 'components/Popup.vue'
 
 export default {
@@ -18,32 +19,36 @@ export default {
   },
   computed: {
     comment: function() {
-      // TODO:見つからなかったときのエラー処理
+      // TODO: 見つからなかったときのエラー処理
       return this.comments.find(c => c.number == this.number)
     },
     // 動的にtemplateを生成するためにコンポーネントに切り分けてcomputedで呼び出す
     CommentMessage: function() {
       // templateの生成
-      const reRefer = /[>＞]{2}[0-9０-９]+/g
+      const reRefer = /(&gt;|＞){2}[0-9０-９]+/g // escapeHTMLされたあとなので&gt;
       const reUrl = /https?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?/g
-      const reImage = /https?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?\.(jpe?g|png|gif|svg)/g
+      const reImageUrl = /https?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?\.(jpe?g|png|gif|svg)/g
 
       let tmp = this.comment.message
-      let images = tmp.match(reImage)
+      let images = tmp.match(reImageUrl) // 色々処理する前に画像URL拾っておく
 
+      // 色々処理
+      tmp = escapeHTML(tmp)
       tmp = tmp.replace(/\n/g, '<br>')
       tmp = tmp.replace(reRefer, '<Popup refer="$&" :comments="comments"></Popup>')
       tmp = tmp.replace(reUrl, '<a href="$&">$&</a>')
 
+      // サムネくっつける
       if(images) {
         tmp += '<div class="thumbnails">'
-        tmp += images.map(url => `<a href="${url}"><img class="thumbnail" src="${url}" /></a>`).join()
+        tmp += images.map(url => `<a href="${url}"><img class="thumbnail" src="${url}" /></a>`).join('')
         tmp += '</div>'
       }
 
       // 単一rootにする
       tmp = `<div>${tmp}</div>`
 
+      // Vueコンポーネントを返す
       return {
         name: 'CommentMessage',
         props: ['comments', 'number'],
