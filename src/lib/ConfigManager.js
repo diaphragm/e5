@@ -37,6 +37,30 @@ export default class ConfigManager {
     localStorage.setItem('boards', JSON.stringify(this._boards))
   }
 
+  getLog(board, dat) {
+    let logs = this._logs
+
+    if (logs[board]) {
+      return logs[board][dat]
+    } else {
+      return undefined
+    }
+  }
+  setLog(board, dat, number) {
+    let logs = this._logs
+
+    if (logs[board]) {
+      logs[board][dat] = number
+    } else {
+      logs[board] = {}
+      logs[board][dat] = number
+    }
+
+    this._logs = logs
+    console.log("CM.js/logs", this._logs)
+    localStorage.setItem('logs', JSON.stringify(this._logs))
+  }
+
   getCache(board, dat) {
     let cache = this._cache
 

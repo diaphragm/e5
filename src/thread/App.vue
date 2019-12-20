@@ -3,6 +3,7 @@ div#app
   h1 {{ name }}
   div.tools
     button(@click="reload") Reload
+    button(@click="clear") Log Clear
   div.comments
     div.comment-container(v-for="comment in comments" :key="comment.number")
       Comment(:comments="comments" :number="comment.number" )
@@ -57,6 +58,7 @@ export default {
     this.dat = dat
     this.name = thread['name']
     this.comments = comments
+    this.read = this.config.getLog(board, dat) || 1
 
     document.title = `e5 - ${this.name}`
 
@@ -66,12 +68,15 @@ export default {
         let number = entry.target.__vue__.number
         // Vue.set(this.intersectings, number, entry.isIntersecting)
         if(entry.isIntersecting) {
-          this.read = Math.max(this.read, number)
+          if(number > this.read) {
+            this.read = number
+            this.config.setLog(this.board, this.dat, number)
+          }
         }
       })
     }, {
       // 真ん中を閾値にするために-50%にしたけど負の値にしていいのか謎
-      rootMargin: '-50% 0px -50% 0px'
+      rootMargin: '-60% 0px -40% 0px'
     })
   },
   updated: function() {
@@ -84,6 +89,10 @@ export default {
     reload: async function() {
       let data = await bbs.reloadCache(this.domain, this.subdomain, this.board, this.dat)
       this.comments = data['comments']
+    },
+    clear: function() {
+      this.config.setLog(this.board, this.dat, undefined)
+      this.config.setCache(this.board, this.dat, undefined)
     }
   }
 }
