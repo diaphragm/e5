@@ -1,4 +1,5 @@
 // configをlocalStorageやクラウドと同期するためのクラス
+// DRYに反しすぎててキモい
 
 export default class ConfigManager {
   constructor() {
@@ -14,6 +15,12 @@ export default class ConfigManager {
     } else {
       this._boards = {}
     }
+    // スレ一覧情報
+    if (localStorage.threads) {
+      this._threads = JSON.parse(localStorage.getItem('threads'))
+    } else {
+      this._threads = {}
+    }
     // 既読履歴など
     if (localStorage.logs) {
       this._logs = JSON.parse(localStorage.getItem('logs'))
@@ -28,6 +35,15 @@ export default class ConfigManager {
     }
   }
 
+  get config() {
+    return this._config
+  }
+  set config(val) {
+    this._config = val
+    console.log("CM.js/config", this._config)
+    localStorage.setItem('config', JSON.stringify(this._config))
+  }
+
   get boards() {
     return this._boards
   }
@@ -36,6 +52,31 @@ export default class ConfigManager {
     console.log("CM.js/boards", this._boards)
     localStorage.setItem('boards', JSON.stringify(this._boards))
   }
+
+  getThreads(board) {
+    let threads = this._threads
+
+    if (threads[board]) {
+      return threads[board]
+    } else {
+      return undefined
+    }
+  }
+  setThreads(board, data) {
+    let threads = this._threads
+
+    if (threads) {
+      threads[board] = data
+    } else {
+      threads = {}
+      threads[board] = data
+    }
+
+    this._threads = threads
+    console.log("CM.js/threads", this._threads)
+    localStorage.setItem('threads', JSON.stringify(this._threads))
+  }
+
 
   getLog(board, dat) {
     let logs = this._logs

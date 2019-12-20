@@ -1,19 +1,25 @@
 <template lang="pug">
-div#app
-  h1 スレ一覧
-  div.threads
-    div.thread(v-for="thread in threads")
-      a(:href="`thread?${createQuery(thread)}`") {{ thread.name }}
-      span {{ thread.count }}
+#app
+  h1 {{ name }}
+  .tools
+    button(@click="reload") Reload(fetch)
+    button(@click="clear") Clear
+    button(@click="sortLogs") debug sortLogs
+  .threads
+    .thread.header
+      .title タイトル
+      .count レス数
+    Thread(v-for="thread in threads" :thread="thread" :domain="domain" :board="board" :config="config" :key="thread.dat")
 </template>
 
 <script>
-document.title = "スレ一覧"
+document.title = 'e5- スレ一覧'
 
-import * as Util from "lib/Utility.js"
-import ConfigManager from "lib/ConfigManager.js"
-import AbstractBBS from "lib/AbstractBBS"
+import * as Util from 'lib/Utility.js'
+import ConfigManager from 'lib/ConfigManager.js'
+import AbstractBBS from 'lib/AbstractBBS'
 const bbs = new AbstractBBS
+import Thread from 'components/Thread.vue'
 
 export default {
   data: function() {
@@ -21,10 +27,12 @@ export default {
       config: new ConfigManager(),
       domain: "",
       board: "",
-      threads: []
+      threads: [],
+      name: ""
     }
   },
   components: {
+    Thread
   },
   mounted: async function() {
     let query = Util.getQueryParameters()
@@ -33,44 +41,51 @@ export default {
     let data = await bbs.getThreads(domain, board)
     let threads = data['threads']
 
+    // FIX: スレの名前を取得する
+    let name = board
+
     this.domain = domain
     this.board = board
     this.threads = threads
+    this.name = name
+
+    this.sortLogs()
   },
   methods: {
-    createQuery(thread) {
-      let queries = []
-      queries.push(`domain=${encodeURIComponent(this.domain)}`)
-      queries.push(`subdomain=${encodeURIComponent(thread.subdomain)}`)
-      queries.push(`board=${encodeURIComponent(thread.board)}`)
-      queries.push(`dat=${encodeURIComponent(thread.dat)}`)
+    reload: async function() {
+      let data = await bbs.reloadThreads(this.domain, this.board)
+      this.threads = data['threads']
+    },
+    clear: function() {
+      this.config.setThreads(this.board, undefined)
+    },
+    sortLogs: function() {
+      let logs = this.config._logs[this.board]
+      if(!logs){ return }
 
-      return queries.join('&')
-    }
+      Object.keys(logs).forEach((dat) => {
+        let index = this.threads.findIndex(t => t.dat == dat)
+        let deleted = this.threads.splice(index, 1)[0]
+        this.threads.unshift(deleted)
+      })
+    },
   }
 }
 </script>
 
-<style lang="scss">
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+<style lang="sass">
+*, *::before, *::after
+  box-sizing: border-box
 
-#app {
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.4;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+#app
+  max-width: 800px
+  margin: 0 auto
+  line-height: 1.4
+  font-family: 'Avenir', Helvetica, Arial, sans-serif
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
 
-h1 {
-  text-align: center;
-}
+h1
+  text-align: center
 
-.thread {
-  border: solid 1px;
-  margin: 1em;
-}
 </style>

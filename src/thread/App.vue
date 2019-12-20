@@ -1,16 +1,16 @@
 <template lang="pug">
-div#app
+#app
   h1 {{ name }}
-  div.tools
+  .tools
     button(@click="reload") Reload
     button(@click="clear") Log Clear
-  div.comments
-    div.comment-container(v-for="comment in comments" :key="comment.number")
+  .comments
+    .comment-container(v-for="comment in comments" :key="comment.number")
       Comment(:comments="comments" :number="comment.number" )
-      div.read(v-if="comment.number == read")
+      .read(v-if="comment.number == read")
         hr
         span ここまで読んだ
-    div.comment-dummy
+    .comment-dummy
 </template>
 
 <script>

@@ -12,7 +12,6 @@ export default class AbstractBBS {
   }
 
   async getBoards() {
-
     let url = this.boardsUrl
     let res = await fetch(url, { mode: 'cors' })
     let data = await res.json()
@@ -20,6 +19,21 @@ export default class AbstractBBS {
   }
 
   async getThreads(domain, board) {
+    let data = config.getThreads(board)
+    if (data) {
+      return data
+    } else {
+      return this.reloadThreads(domain, board)
+    }
+  }
+
+  async reloadThreads(domain, board) {
+    let data = await this.fetchThreads(domain, board)
+    config.setThreads(board, data)
+    return data
+  }
+
+  async fetchThreads(domain, board) {
     let url = this.threadsUrl
     url = url.replace('{{domain}}', domain)
     url = url.replace('{{board}}', board)
@@ -40,6 +54,7 @@ export default class AbstractBBS {
       }
     })
 
+    console.log('fetchThreads', ret)
     return ret
   }
 
