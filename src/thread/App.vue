@@ -10,6 +10,7 @@
       .read(v-if="comment.number == read")
         hr
         span ここまで読んだ
+    button(@click="reload") Reload
     .comment-dummy
 </template>
 
