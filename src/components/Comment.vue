@@ -48,7 +48,7 @@ export default {
       // サムネくっつける
       if(images) {
         tmp += '<div class="thumbnails">'
-        tmp += images.map(url => `<a href="${url}" target="_blank" rel="noopener noreferrer"><img class="thumbnail" src="${url}" /></a>`).join('')
+        tmp += images.map(url => `<a href="${url}" target="_blank" rel="noopener noreferrer"><img class="thumbnail" loading="lazy" src="${url}" /></a>`).join('')
         tmp += '</div>'
       }
 
