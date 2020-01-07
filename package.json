@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "publish": "rm -r ./docs; webpack; mv ./dist ./docs"
   },
   "author": "diaphragm",
   "license": "MIT",
