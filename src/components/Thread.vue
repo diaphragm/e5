@@ -1,7 +1,7 @@
 <template lang="pug">
 .thread(:key="thread.dat" :class="{ isread: isRead }")
   .title
-    a(:href="`thread?${createQuery(thread)}`" target="_blank" rel="noopener noreferrer") {{ thread.name }}
+    a(:href="`../thread?${createQuery(thread)}`" target="_blank" rel="noopener noreferrer") {{ thread.name }}
   .count {{ thread.count }}
   .read
     span(v-if="isRead") {{ readNumber }}
