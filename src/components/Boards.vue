@@ -35,7 +35,7 @@ export default {
       }
     },
     reloadBoards: async function() {
-      let data = await bbs.getBoards()
+      const data = await bbs.getBoards()
       this.config.boards = data
     },
     debug: function () {

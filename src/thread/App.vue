@@ -43,15 +43,15 @@ export default {
     Comment
   },
   mounted: async function() {
-    let query = Util.getQueryParameters()
-    let domain = query['domain']
-    let subdomain = query['subdomain']
-    let board = query['board']
-    let dat = query['dat']
+    const query = Util.getQueryParameters()
+    const domain = query['domain']
+    const subdomain = query['subdomain']
+    const board = query['board']
+    const dat = query['dat']
 
-    let data = await bbs.getCache(domain, subdomain, board, dat)
-    let thread = data['thread']
-    let comments = data['comments']
+    const data = await bbs.getCache(domain, subdomain, board, dat)
+    const thread = data['thread']
+    const comments = data['comments']
 
     this.domain = domain
     this.subdomain = subdomain
@@ -66,7 +66,7 @@ export default {
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         // FIX: 生ElementからVueComponentを取得するの気持ち悪い
-        let number = entry.target.__vue__.number
+        const number = entry.target.__vue__.number
         // Vue.set(this.intersectings, number, entry.isIntersecting)
         if(entry.isIntersecting) {
           if(number > this.read) {
@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     reload: async function() {
-      let data = await bbs.reloadCache(this.domain, this.subdomain, this.board, this.dat)
+      const data = await bbs.reloadCache(this.domain, this.subdomain, this.board, this.dat)
       this.comments = data['comments']
     },
     clear: function() {

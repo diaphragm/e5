@@ -26,7 +26,7 @@ export default {
       return this.comments.find(c => c.number == this.number)
     },
     date: function() {
-      let date = new Date(Number(this.comment.date)*1000)
+      const date = new Date(Number(this.comment.date)*1000)
       return date.toLocaleString('ja-JP')
     },
     // 動的にtemplateを生成するためにコンポーネントに切り分けてcomputedで呼び出す
@@ -37,7 +37,7 @@ export default {
       const reImageUrl = /https?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?\.(jpe?g|png|gif|svg)/g
 
       let tmp = this.comment.message
-      let images = tmp.match(reImageUrl) // 色々処理する前に画像URL拾っておく
+      const images = tmp.match(reImageUrl) // 色々処理する前に画像URL拾っておく
 
       // 色々処理
       tmp = escapeHTML(tmp)

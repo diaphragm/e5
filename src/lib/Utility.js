@@ -1,16 +1,14 @@
 export const getQueryParameters = () => {
-  let queryString = window.location.search.slice(1)
+  const queryString = window.location.search.slice(1)
   if(queryString.length == 0) { return {} }
 
-  let ret = {}
-  queryString.split('&').forEach((str) => {
-    let data = str.split('=')
-    let key = decodeURIComponent(data[0])
-    let value = data[1] && decodeURIComponent(data[1])
-    ret[key] = value
-  })
-
-  return ret
+  return queryString.split('&').reduce((obj, str) => {
+    let [key, value] = str.split('=')
+    key = decodeURIComponent(key)
+    value = value && decodeURIComponent(value)
+    obj[key] = value
+    return obj
+  }, {})
 }
 
 export const escapeHTML = (str) => {

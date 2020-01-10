@@ -19,15 +19,15 @@ export default {
   computed: {
     isRead: function() {
       // FIX: logsのインターフェース見直す
-      let logs = this.config._logs[this.board]
+      const logs = this.config._logs[this.board]
       if(!logs){ return false }
 
-      let index = Object.keys(logs).indexOf(this.thread.dat)
+      const index = Object.keys(logs).indexOf(this.thread.dat)
       return (index > -1)
     },
     readNumber: function() {
       // FIX: logsのインターフェース見直す
-      let logs = this.config._logs[this.board]
+      const logs = this.config._logs[this.board]
       if(!logs){ return false }
 
       return logs[this.thread.dat]
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     createQuery: function() {
-      let queries = []
+      const queries = []
       queries.push(`domain=${encodeURIComponent(this.domain)}`)
       queries.push(`subdomain=${encodeURIComponent(this.thread.subdomain)}`)
       queries.push(`board=${encodeURIComponent(this.thread.board)}`)

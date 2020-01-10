@@ -13,13 +13,13 @@ export default class AbstractBBS {
 
   async getBoards() {
     let url = this.boardsUrl
-    let res = await fetch(url, { mode: 'cors' })
-    let data = await res.json()
+    const res = await fetch(url, { mode: 'cors' })
+    const data = await res.json()
     return data
   }
 
   async getThreads(domain, board) {
-    let data = config.getThreads(board)
+    const data = config.getThreads(board)
     if (data) {
       return data
     } else {
@@ -28,7 +28,7 @@ export default class AbstractBBS {
   }
 
   async reloadThreads(domain, board) {
-    let data = await this.fetchThreads(domain, board)
+    const data = await this.fetchThreads(domain, board)
     config.setThreads(board, data)
     return data
   }
@@ -38,13 +38,13 @@ export default class AbstractBBS {
     url = url.replace('{{domain}}', domain)
     url = url.replace('{{board}}', board)
 
-    let res = await fetch(url, { mode: 'cors' })
-    let data = await res.json()
+    const res = await fetch(url, { mode: 'cors' })
+    const data = await res.json()
 
-    let ret = {}
+    const ret = {}
     ret['count'] = data['total_count']
     ret['threads'] = data['threads'].map((thread) => {
-      let path = thread[3].split('/')
+      const path = thread[3].split('/')
       return {
         subdomain: thread[2],
         board: path[0],
@@ -59,7 +59,7 @@ export default class AbstractBBS {
   }
 
   async getCache(domain, subdomain, board, dat) {
-    let data = config.getCache(board, dat)
+    const data = config.getCache(board, dat)
     if(data) {
       return data
     } else {
@@ -68,7 +68,7 @@ export default class AbstractBBS {
   }
 
   async reloadCache(domain, subdomain, board, dat) {
-    let data = await this.fetchCache(domain, subdomain, board, dat)
+    const data = await this.fetchCache(domain, subdomain, board, dat)
     config.setCache(board, dat, data)
     return data
   }
@@ -80,13 +80,13 @@ export default class AbstractBBS {
     url = url.replace('{{board}}', board)
     url = url.replace('{{dat}}', dat)
 
-    let res = await fetch(url, { mode: 'cors' })
-    let data = await res.json()
+    const res = await fetch(url, { mode: 'cors' })
+    const data = await res.json()
 
-    let thread = data['thread']
-    let path = thread[3].split('/')
+    const thread = data['thread']
+    const path = thread[3].split('/')
 
-    let ret = {}
+    const ret = {}
     ret['count'] = data['total_count']
     ret['thread'] = {
       subdomain: thread[2],

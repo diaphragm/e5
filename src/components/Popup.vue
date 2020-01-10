@@ -24,13 +24,13 @@ export default {
   },
   computed: {
     numbers: function() {
-      let str = toHalfWidth(this.refer)
+      const str = toHalfWidth(this.refer)
 
       // >>10-20 みたいなパターン
-      let m = str.match(/(\d+)[-ｰ](\d+)/)
+      const m = str.match(/(\d+)[-ｰ](\d+)/)
       if(m) {
-        let s = +m[1]
-        let e = +m[2]
+        const s = +m[1]
+        const e = +m[2]
         return Array(e-s+1).fill(0).map((x, i) => s + i)
       }
 

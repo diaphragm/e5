@@ -54,7 +54,7 @@ export default class ConfigManager {
   }
 
   getThreads(board) {
-    let threads = this._threads
+    const threads = this._threads
 
     if (threads[board]) {
       return threads[board]
@@ -63,7 +63,7 @@ export default class ConfigManager {
     }
   }
   setThreads(board, data) {
-    let threads = this._threads
+    const threads = this._threads
 
     if (threads) {
       threads[board] = data
@@ -79,7 +79,7 @@ export default class ConfigManager {
 
 
   getLog(board, dat) {
-    let logs = this._logs
+    const logs = this._logs
 
     if (logs[board]) {
       return logs[board][dat]
@@ -88,7 +88,7 @@ export default class ConfigManager {
     }
   }
   setLog(board, dat, number) {
-    let logs = this._logs
+    const logs = this._logs
 
     if (logs[board]) {
       logs[board][dat] = number
@@ -103,7 +103,7 @@ export default class ConfigManager {
   }
 
   getCache(board, dat) {
-    let cache = this._cache
+    const cache = this._cache
 
     if(cache[board]) {
       return cache[board][dat]
@@ -112,7 +112,7 @@ export default class ConfigManager {
     }
   }
   setCache(board, dat, data) {
-    let cache = this._cache
+    const cache = this._cache
 
     if (cache[board]) {
       cache[board][dat] = data
