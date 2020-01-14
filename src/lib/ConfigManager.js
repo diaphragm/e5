@@ -1,9 +1,24 @@
 // configをlocalStorageやクラウドと同期するためのクラス
 // DRYに反しすぎててキモい
 
+import DropboxAPI from 'lib/DropboxAPI.js'
+
 const CONFIG_PATH = "/config.json"
 
 export default class ConfigManager {
+  async uploadDropbox() {
+    const dbx = new DropboxAPI()
+    dbx.uploadData(this._config)
+  }
+  async downloadDropbox() {
+    const dbx = new DropboxAPI()
+    const data = await dbx.downloadData()
+    this.config = data // localStorageとも同期
+  }
+  async syncDropbox() {
+
+  }
+
   async loadJson() {
     const ret = await fetch(CONFIG_PATH)
     const data = await ret.json()
@@ -17,7 +32,7 @@ export default class ConfigManager {
     } else {
       this.loadJson().then((data) => {
         console.log(data)
-        this._config = data
+        this.config = data // localStorageと同期
       })
     }
     // 板情報

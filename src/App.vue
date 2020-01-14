@@ -1,7 +1,14 @@
 <template lang="pug">
 div#app
-  h1 Hello
-  <Boards v-bind:config="config" />
+  .debug-tools
+    button(onclick="localStorage.clear()") dbg/clear
+  hr
+  h1 e5
+  h2 板一覧
+  Boards(:config="config")
+  hr
+  h2 設定
+  Config(:config="config")
 </template>
 
 <script>
@@ -9,6 +16,7 @@ document.title = "e5"
 
 import ConfigManager from "./lib/ConfigManager.js"
 import Boards from "./components/Boards.vue"
+import Config from "./components/Config.vue"
 
 export default {
   data: function() {
@@ -17,7 +25,7 @@ export default {
     }
   },
   components: {
-    Boards
+    Boards, Config
   }
 }
 </script>
