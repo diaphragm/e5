@@ -1,5 +1,7 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const WriteFilePlugin = require('write-file-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
@@ -37,6 +39,16 @@ module.exports = {
       filename: 'thread/index.html',
     }),
     new VueLoaderPlugin(),
+    new CopyPlugin(
+      [
+        {
+          context: 'src',
+          from: '**/*.json',
+          to: path.resolve(__dirname, 'dist')
+        }
+      ],
+    ),
+    new WriteFilePlugin,
   ],
   module: {
     rules: [

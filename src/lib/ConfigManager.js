@@ -1,13 +1,24 @@
 // configをlocalStorageやクラウドと同期するためのクラス
 // DRYに反しすぎててキモい
 
+const CONFIG_PATH = "/config.json"
+
 export default class ConfigManager {
+  async loadJson() {
+    const ret = await fetch(CONFIG_PATH)
+    const data = await ret.json()
+    return data
+  }
+
   constructor() {
     // 設定
     if (localStorage.config) {
       this._config = JSON.parse(localStorage.getItem('config'))
     } else {
-      this._config = {}
+      this.loadJson().then((data) => {
+        console.log(data)
+        this._config = data
+      })
     }
     // 板情報
     if (localStorage.boards) {
