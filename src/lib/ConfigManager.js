@@ -3,7 +3,7 @@
 
 import DropboxAPI from 'lib/DropboxAPI.js'
 
-const CONFIG_PATH = "/config.json"
+const CONFIG_PATH = "/config.default.json"
 
 export default class ConfigManager {
   constructor() {
