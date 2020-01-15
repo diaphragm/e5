@@ -6,18 +6,18 @@ import DropboxAPI from 'lib/DropboxAPI.js'
 const CONFIG_PATH = "/config.json"
 
 export default class ConfigManager {
-  async uploadDropbox() {
-    const dbx = new DropboxAPI()
-    dbx.uploadData(this._config)
-  }
-  async downloadDropbox() {
-    const dbx = new DropboxAPI()
-    const data = await dbx.downloadData()
-    this.config = data // localStorageとも同期
-  }
-  async syncDropbox() {
+  // async uploadDropbox() {
+  //   const dbx = new DropboxAPI()
+  //   dbx.uploadData(this._config)
+  // }
+  // async downloadDropbox() {
+  //   const dbx = new DropboxAPI()
+  //   const data = await dbx.downloadData()
+  //   this.config = data // localStorageとも同期
+  // }
+  // async syncDropbox() {
 
-  }
+  // }
 
   async loadJson() {
     const ret = await fetch(CONFIG_PATH)
@@ -28,11 +28,12 @@ export default class ConfigManager {
   constructor() {
     // 設定
     if (localStorage.config) {
-      this._config = JSON.parse(localStorage.getItem('config'))
+      this.config = JSON.parse(localStorage.getItem('config'))
     } else {
       this.loadJson().then((data) => {
         console.log(data)
-        this.config = data // localStorageと同期
+        this.config = data
+        this.save() // localStorageと同期
       })
     }
     // 板情報
@@ -61,13 +62,17 @@ export default class ConfigManager {
     }
   }
 
-  get config() {
-    return this._config
-  }
-  set config(val) {
-    this._config = val
-    console.log("CM.js/config", this._config)
-    localStorage.setItem('config', JSON.stringify(this._config))
+  // get config() {
+  //   return this._config
+  // }
+  // set config(val) {
+  //   this._config = val
+  //   console.log("CM.js/config", this._config)
+  //   localStorage.setItem('config', JSON.stringify(this._config))
+  // }
+  save() {
+    console.log("CM.js/config", this.config)
+    localStorage.setItem('config', JSON.stringify(this.config))
   }
 
   get boards() {

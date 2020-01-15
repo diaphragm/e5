@@ -9,6 +9,7 @@ export default class DropboxAPI {
   constructor(config) {
     this.appKey = config.config.dropbox.appKey
     this.configFilePath = config.config.dropbox.configFilePath
+    this.config = config
   }
 
   authUrl() {
@@ -18,6 +19,8 @@ export default class DropboxAPI {
   }
 
   getCallbackQueries() {
+    if(window.location.hash.length == 0){ return {} }
+
     const queries = window.location.hash.slice(1).split('&').reduce((obj, x) => {
       const [key, value] = x.split('=')
       obj[key] = value
@@ -28,7 +31,7 @@ export default class DropboxAPI {
   }
 
   fetchApi(url, data = {}) {
-    const access_token = localStorage.dbx_access_token
+    const access_token = this.config.config.dropbox.accessToken
     return fetch(url, {
       method: 'POST',
       headers: {
@@ -39,8 +42,8 @@ export default class DropboxAPI {
     })
   }
 
-  uploadDat (data = {}) {
-    const access_token = localStorage.dbx_access_token
+  uploadData (data = {}) {
+    const access_token = this.config.config.dropbox.accessToken
     return fetch(DBX_UPLOAD_URL, {
       method: 'POST',
       headers: {
@@ -56,7 +59,7 @@ export default class DropboxAPI {
   }
 
   downloadData() {
-    const access_token = localStorage.dbx_access_token
+    const access_token = this.config.config.dropbox.accessToken
     return fetch(DBX_DOWNLOAD_URL, {
       method: 'POST',
       headers: {
