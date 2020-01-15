@@ -30,3 +30,13 @@ export const toHalfWidth = (str) => {
     return String.fromCharCode(c.charCodeAt(0) - 0xFEE0);
   })
 }
+
+export const debounce = (fn, interval) => {
+  let timer
+  return function () {
+    clearTimeout(timer)
+    timer = setTimeout(function () {
+      fn()
+    }, interval)
+  }
+}
