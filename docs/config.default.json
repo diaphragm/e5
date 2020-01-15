@@ -1,0 +1,12 @@
+{
+  "bbs": {
+    "boardsUrl": "https://e5.9kv.org/boards",
+    "threadsUrl": "https://e5.9kv.org/threads/{{domain}}/{{board}}",
+    "cacheUrl": "https://e5.9kv.org/cache/{{domain}}/{{subdomain}}/{{board}}/{{dat}}"
+  },
+  "dropbox": {
+    "appKey": "gr51jpel8c7ft93",
+    "configFilePath": "/config.txt",
+    "logFilePath": "/logs.json"
+  }
+}
