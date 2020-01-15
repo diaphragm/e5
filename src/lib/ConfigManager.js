@@ -41,10 +41,8 @@ export default class ConfigManager {
      if (localStorage.logs) {
       this._logs = JSON.parse(localStorage.getItem('logs'))
     } else {
-      this.downloadLog()
+      this.downloadLogs()
     }
-    // this.downloadLog()
-
   }
 
   uploadLogs() {
