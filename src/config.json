@@ -6,9 +6,7 @@
   },
   "dropbox": {
     "appKey": "gr51jpel8c7ft93",
-    "oauthUrl": "https://www.dropbox.com/oauth2/authorize",
-    "uploadUrl": "https://content.dropboxapi.com/2/files/upload",
-    "downloadUrl": "https://content.dropboxapi.com/2/files/download",
-    "configFilePath": "/test.txt"
+    "configFilePath": "/config.txt",
+    "logFilePath": "/logs.json"
   }
 }

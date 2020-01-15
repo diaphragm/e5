@@ -63,6 +63,10 @@ export default {
 
     document.title = `e5 - ${this.name}`
 
+    const uploadLogs = Util.debounce(() => {
+      this.config.uploadLogs()
+    }, 1000)
+
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         // FIX: 生ElementからVueComponentを取得するの気持ち悪い
@@ -72,6 +76,8 @@ export default {
           if(number > this.read) {
             this.read = number
             this.config.setLog(this.board, this.dat, number)
+
+            uploadLogs() // debounced function
           }
         }
       })

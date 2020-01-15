@@ -6,25 +6,6 @@ import DropboxAPI from 'lib/DropboxAPI.js'
 const CONFIG_PATH = "/config.json"
 
 export default class ConfigManager {
-  // async uploadDropbox() {
-  //   const dbx = new DropboxAPI()
-  //   dbx.uploadData(this._config)
-  // }
-  // async downloadDropbox() {
-  //   const dbx = new DropboxAPI()
-  //   const data = await dbx.downloadData()
-  //   this.config = data // localStorageとも同期
-  // }
-  // async syncDropbox() {
-
-  // }
-
-  async loadJson() {
-    const ret = await fetch(CONFIG_PATH)
-    const data = await ret.json()
-    return data
-  }
-
   constructor() {
     // 設定
     if (localStorage.config) {
@@ -48,19 +29,44 @@ export default class ConfigManager {
     } else {
       this._threads = {}
     }
-    // 既読履歴など
-    if (localStorage.logs) {
-      this._logs = JSON.parse(localStorage.getItem('logs'))
-    } else {
-      this._logs = {}
-    }
+
     // スレのキャッシュ
     if (localStorage.cache) {
       this._cache = JSON.parse(localStorage.getItem('cache'))
     } else {
       this._cache = {}
     }
+
+    // 既読履歴など
+     if (localStorage.logs) {
+      this._logs = JSON.parse(localStorage.getItem('logs'))
+    } else {
+      this.downloadLog()
+    }
+    // this.downloadLog()
+
   }
+
+  uploadLogs() {
+    const dbx = new DropboxAPI(this)
+    dbx.uploadData(this.config.dropbox.logFilePath, this._logs)
+  }
+
+  async downloadLogs() {
+    const dbx = new DropboxAPI(this)
+    const data = await dbx.downloadData(this.config.dropbox.logFilePath)
+
+    this._logs = data // FIX: マージしたい
+    console.log("CM.js/logs", this._logs)
+    localStorage.setItem('logs', JSON.stringify(this._logs))
+  }
+
+  async loadJson() {
+    const ret = await fetch(CONFIG_PATH)
+    const data = await ret.json()
+    return data
+  }
+
 
   // get config() {
   //   return this._config

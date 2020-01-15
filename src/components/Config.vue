@@ -3,8 +3,9 @@
   textarea.editor(v-model="json")
   button.save(@click="save") Save
   button.auth(@click="auth") Outh
-  button(@click="upload") Upload
-  button(@click="download") Download
+  button(@click="upload") UploadConfig
+  button(@click="download") DownloadConfig
+  button(@click="downloadLogs") DownloadLogs
 </template>
 
 <script>
@@ -35,7 +36,8 @@ export default {
       }
     },
     upload: function() {
-      this.dbx.uploadData(this.config.config)
+      const path = this.config.config.dropbox.configFilePath
+      this.dbx.uploadData(path, this.config.config)
       console.log('uploading...')
     },
     download: async function() {
@@ -43,6 +45,9 @@ export default {
       console.log(data)
       this.config.config = data
       this.config.save()
+    },
+    downloadLogs: async function() {
+      this.config.downloadLogs()
     }
   },
   mounted: function() {

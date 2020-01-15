@@ -30,19 +30,19 @@ export default class DropboxAPI {
     return queries
   }
 
-  fetchApi(url, data = {}) {
-    const access_token = this.config.config.dropbox.accessToken
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
-  }
+  // fetchApi(url, data = {}) {
+  //   const access_token = this.config.config.dropbox.accessToken
+  //   return fetch(url, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Authorization': `Bearer ${access_token}`,
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(data)
+  //   })
+  // }
 
-  uploadData (data = {}) {
+  uploadData (path, data = {}) {
     const access_token = this.config.config.dropbox.accessToken
     return fetch(DBX_UPLOAD_URL, {
       method: 'POST',
@@ -50,7 +50,7 @@ export default class DropboxAPI {
         'Authorization': `Bearer ${access_token}`,
         'Content-Type': 'application/octet-stream',
         'Dropbox-API-Arg': JSON.stringify({
-          path: this.configFilePath,
+          path: path,
           mode: 'overwrite',
         })
       },
@@ -58,14 +58,14 @@ export default class DropboxAPI {
     })
   }
 
-  downloadData() {
+  downloadData(path) {
     const access_token = this.config.config.dropbox.accessToken
     return fetch(DBX_DOWNLOAD_URL, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${access_token}`,
         'Dropbox-API-Arg': JSON.stringify({
-          path: this.configFilePath,
+          path: path,
         })
       }
     }).then((res) => {
