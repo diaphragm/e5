@@ -7,16 +7,6 @@ const CONFIG_PATH = "/config.default.json"
 
 export default class ConfigManager {
   constructor() {
-    // 設定
-    if (localStorage.config) {
-      this.config = JSON.parse(localStorage.getItem('config'))
-    } else {
-      this.loadJson().then((data) => {
-        console.log(data)
-        this.config = data
-        this.save() // localStorageと同期
-      })
-    }
     // 板情報
     if (localStorage.boards) {
       this._boards = JSON.parse(localStorage.getItem('boards'))
@@ -41,8 +31,22 @@ export default class ConfigManager {
      if (localStorage.logs) {
       this._logs = JSON.parse(localStorage.getItem('logs'))
     } else {
-      this.downloadLogs()
+      this._logs = {}
     }
+
+    // 設定
+    if (localStorage.config) {
+      this.config = JSON.parse(localStorage.getItem('config'))
+      this.downloadLogs() // Logをダウンロードしておく
+    } else {
+      this.loadJson().then((data) => {
+        this.config = data
+        this.save() // localStorageと同期
+        console.log(data)
+        this.downloadLogs() // Logをダウンロードしておく
+      })
+    }
+
   }
 
   uploadLogs() {

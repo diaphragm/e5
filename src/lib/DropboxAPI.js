@@ -7,14 +7,13 @@ const DBX_DOWNLOAD_URL = 'https://content.dropboxapi.com/2/files/download'
 
 export default class DropboxAPI {
   constructor(config) {
-    this.appKey = config.config.dropbox.appKey
-    this.configFilePath = config.config.dropbox.configFilePath
     this.config = config
   }
 
   authUrl() {
+    const appkey = this.config.config.dropbox.appKey
     const redirectUri = encodeURI(window.location.href)
-    const url = `${DBX_OAUTH2_URL}?client_id=${this.appKey}&response_type=token&redirect_uri=${redirectUri}`
+    const url = `${DBX_OAUTH2_URL}?client_id=${appkey}&response_type=token&redirect_uri=${redirectUri}`
     return url
   }
 
@@ -44,6 +43,9 @@ export default class DropboxAPI {
 
   uploadData (path, data = {}) {
     const access_token = this.config.config.dropbox.accessToken
+
+    if( !access_token ) { return }
+
     return fetch(DBX_UPLOAD_URL, {
       method: 'POST',
       headers: {
@@ -60,6 +62,9 @@ export default class DropboxAPI {
 
   downloadData(path) {
     const access_token = this.config.config.dropbox.accessToken
+
+    if( !access_token ) { return {} }
+
     return fetch(DBX_DOWNLOAD_URL, {
       method: 'POST',
       headers: {
