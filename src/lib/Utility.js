@@ -39,4 +39,21 @@ export const debounce = (fn, interval) => {
       fn()
     }, interval)
   }
+
+}
+
+// sourceを破壊する
+export const deepAssign = (object, source) => {
+  Object.keys(source).forEach((key) => {
+    if (typeof (source[key]) === 'object') {
+      if (!object[key]) {
+        object[key] = {}
+      }
+      deepAssign(object[key], source[key])
+    } else {
+      object[key] = source[key]
+    }
+  })
+
+  return object
 }

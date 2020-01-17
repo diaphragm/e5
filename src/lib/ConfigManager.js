@@ -2,6 +2,7 @@
 // DRYに反しすぎててキモい
 
 import DropboxAPI from 'lib/DropboxAPI.js'
+import { deepAssign } from 'lib/Utility.js'
 
 const CONFIG_PATH = "/config.default.json"
 
@@ -58,7 +59,7 @@ export default class ConfigManager {
     const dbx = new DropboxAPI(this)
     const data = await dbx.downloadData(this.config.dropbox.logFilePath)
 
-    this._logs = data // FIX: マージしたい
+    deepAssign(this._logs, data)
     console.log("CM.js/logs", this._logs)
     localStorage.setItem('logs', JSON.stringify(this._logs))
   }
