@@ -4,7 +4,7 @@
 import DropboxAPI from 'lib/DropboxAPI.js'
 import { deepAssign } from 'lib/Utility.js'
 
-const CONFIG_PATH = "/config.default.json"
+const CONFIG_PATH = "./config.default.json"
 
 export default class ConfigManager {
   constructor() {
@@ -57,6 +57,7 @@ export default class ConfigManager {
 
   async downloadLogs() {
     const dbx = new DropboxAPI(this)
+    // TODO: エラー時の処理
     const data = await dbx.downloadData(this.config.dropbox.logFilePath)
 
     deepAssign(this._logs, data)
