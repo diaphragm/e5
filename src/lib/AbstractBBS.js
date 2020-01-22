@@ -4,18 +4,31 @@ import ConfigManager from 'lib/ConfigManager.js'
 const config = new ConfigManager()
 
 export default class AbstractBBS {
-  constructor(config) {
-    // 各APIはitest互換のjsonを返す
-    this.boardsUrl = "https://e5.9kv.org/boards"
-    this.threadsUrl = "https://e5.9kv.org/threads/{{domain}}/{{board}}"
-    this.cacheUrl = "https://e5.9kv.org/cache/{{domain}}/{{subdomain}}/{{board}}/{{dat}}"
+  constructor() {
   }
 
   async getBoards() {
-    let url = this.boardsUrl
-    const res = await fetch(url, { mode: 'cors' })
-    const data = await res.json()
-    return data
+    let url = config.config.bbs.boardsUrl
+    const res = await fetch(url, { mode: 'cors', credentials: 'include'})
+    const data = await res.text()
+
+    const ret = {}
+    let category = ''
+    let m = undefined
+
+    data.split('\n').forEach((line) => {
+      m = line.match(/<br><br><B>(.+?)<\/B><br>/)
+      if (m) {
+        category = m[1]
+        ret[category] = []
+      }
+      m = line.match(/<A HREF=http:\/\/(.+)\.(5ch\.net|bbspink\.com)\/(.+)\/>(.+)<\/A>/)
+      if (m) {
+        ret[category].push( {domain: m[2], subdomain: m[1], board: m[3], name: m[4]})
+      }
+    })
+
+    return ret
   }
 
   async getThreads(domain, board) {
@@ -34,11 +47,11 @@ export default class AbstractBBS {
   }
 
   async fetchThreads(domain, board) {
-    let url = this.threadsUrl
+    let url = config.config.bbs.threadsUrl
     url = url.replace('{{domain}}', domain)
     url = url.replace('{{board}}', board)
 
-    const res = await fetch(url, { mode: 'cors' })
+    const res = await fetch(url, { mode: 'cors', credentials: 'include' })
     const data = await res.json()
 
     const ret = {}
@@ -74,13 +87,13 @@ export default class AbstractBBS {
   }
 
   async fetchCache(domain, subdomain, board, dat) {
-    let url = this.cacheUrl
+    let url = config.config.bbs.cacheUrl
     url = url.replace('{{domain}}', domain)
     url = url.replace('{{subdomain}}', subdomain)
     url = url.replace('{{board}}', board)
     url = url.replace('{{dat}}', dat)
 
-    const res = await fetch(url, { mode: 'cors' })
+    const res = await fetch(url, { mode: 'cors', credentials: 'include' })
     const data = await res.json()
 
     const thread = data['thread']
