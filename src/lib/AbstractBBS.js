@@ -59,6 +59,7 @@ export default class AbstractBBS {
     ret['threads'] = data['threads'].map((thread) => {
       const path = thread[3].split('/')
       return {
+        domain: domain,
         subdomain: thread[2],
         board: path[0],
         dat: path[1],
@@ -102,6 +103,7 @@ export default class AbstractBBS {
     const ret = {}
     ret['count'] = data['total_count']
     ret['thread'] = {
+      domain: domain,
       subdomain: thread[2],
       board: path[0],
       dat: path[1],

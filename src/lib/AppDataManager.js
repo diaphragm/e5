@@ -94,6 +94,10 @@ export default class AppDataManager {
     localStorage.setItem('boards', JSON.stringify(this._boards))
   }
 
+  get logs() {
+    return this._logs
+  }
+
   getThreads(board) {
     const threads = this._threads
 

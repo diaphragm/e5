@@ -1,11 +1,5 @@
 <template lang="pug">
 #app
-  h1 {{ name }}
-  Recent(:appData="appData")
-  .tools
-    button(@click="reload") Reload(fetch)
-    button(@click="clear") Clear
-    button(@click="sortLogs") debug sortLogs
   .threads
     .thread.header
       .title タイトル
@@ -14,44 +8,38 @@
 </template>
 
 <script>
-document.title = 'e5 - スレ一覧'
+document.title = 'e5 - 最近読んだスレ'
 
 import * as Util from 'lib/Utility.js'
 import AppDataManager from 'lib/AppDataManager.js'
 import AbstractBBS from 'lib/AbstractBBS'
 const bbs = new AbstractBBS
 import Thread from 'components/Thread.vue'
-import Recent from 'components/Recent.vue'
 
 export default {
+  props: ['appData'],
   data: function() {
     return {
-      appData: new AppDataManager(),
-      domain: "",
-      board: "",
-      threads: [],
-      name: ""
     }
   },
   components: {
-    Thread, Recent
+    Thread
+  },
+  computed: {
+    threads: function() {
+      const ret = []
+      const logs = this.appData.logs
+      Object.keys(logs).forEach((board) => {
+        Object.keys(logs[board]).forEach((dat) => {
+          const cache = this.appData.getCache(board, dat)
+          ret.push(cache.thread)
+        })
+      })
+
+      return ret
+    }
   },
   mounted: async function() {
-    const query = Util.getQueryParameters()
-    const domain = query['domain']
-    const board = query['board']
-    const data = await bbs.getThreads(domain, board)
-    const threads = data['threads']
-
-    // FIX: スレの名前を取得する
-    const name = board
-
-    this.domain = domain
-    this.board = board
-    this.threads = threads
-    this.name = name
-
-    this.sortLogs()
   },
   methods: {
     reload: async function() {

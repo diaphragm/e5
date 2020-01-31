@@ -10,8 +10,7 @@
 
 <script>
 export default {
-  // FIX: domainとかboard受け取るのがイマイチ。log取り出すために使う
-  props: ['thread', 'appData', 'domain', 'board'],
+  props: ['appData', 'thread'],
   data: function() {
     return {
     }
@@ -19,7 +18,7 @@ export default {
   computed: {
     isRead: function() {
       // FIX: logsのインターフェース見直す
-      const logs = this.appData._logs[this.board]
+      const logs = this.appData._logs[this.thread.board]
       if(!logs){ return false }
 
       const index = Object.keys(logs).indexOf(this.thread.dat)
@@ -27,7 +26,7 @@ export default {
     },
     readNumber: function() {
       // FIX: logsのインターフェース見直す
-      const logs = this.appData._logs[this.board]
+      const logs = this.appData._logs[this.thread.board]
       if(!logs){ return false }
 
       return logs[this.thread.dat]
@@ -36,7 +35,7 @@ export default {
   methods: {
     createQuery: function() {
       const queries = []
-      queries.push(`domain=${encodeURIComponent(this.domain)}`)
+      queries.push(`domain=${encodeURIComponent(this.thread.domain)}`)
       queries.push(`subdomain=${encodeURIComponent(this.thread.subdomain)}`)
       queries.push(`board=${encodeURIComponent(this.thread.board)}`)
       queries.push(`dat=${encodeURIComponent(this.thread.dat)}`)
