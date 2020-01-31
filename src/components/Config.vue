@@ -13,21 +13,21 @@ import Vue from 'vue'
 import DropboxAPI from 'lib/DropboxAPI.js'
 
 export default {
-  props: ['config'],
+  props: ['appData'],
   components: {
   },
   data: function() {
     return {
-      json: JSON.stringify(this.config.config, null, 2),
-      dbx: new DropboxAPI(this.config)
+      json: JSON.stringify(this.appData.config, null, 2),
+      dbx: new DropboxAPI(this.appData)
     }
   },
   methods: {
     save: function() {
       const data = JSON.parse(this.json)
       console.log(data)
-      this.config.config = data
-      this.config.save()
+      this.appData.config = data
+      this.appData.save()
     },
     auth: function() {
       if( confirm('Dropboxへ認証します') ) {
@@ -36,25 +36,25 @@ export default {
       }
     },
     upload: function() {
-      const path = this.config.config.dropbox.configFilePath
-      this.dbx.uploadData(path, this.config.config)
+      const path = this.appData.config.dropbox.configFilePath
+      this.dbx.uploadData(path, this.appData.config)
       console.log('uploading...')
     },
     download: async function() {
       const data = await this.dbx.downloadData()
       console.log(data)
-      this.config.config = data
-      this.config.save()
+      this.appData.config = data
+      this.appData.save()
     },
     downloadLogs: async function() {
-      this.config.downloadLogs()
+      this.appData.downloadLogs()
     }
   },
   mounted: function() {
     const queries = this.dbx.getCallbackQueries()
     if (queries.access_token) {
-      this.config.config.dropbox.accessToken = queries.access_token
-      this.config.save()
+      this.appData.config.dropbox.accessToken = queries.access_token
+      this.appData.save()
     }
   }
 }

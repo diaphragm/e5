@@ -6,12 +6,12 @@ const DBX_DOWNLOAD_URL = 'https://content.dropboxapi.com/2/files/download'
 // const CONFIG_FILE_PATH = '/test.txt'
 
 export default class DropboxAPI {
-  constructor(config) {
-    this.config = config
+  constructor(appData) {
+    this.appData = appData
   }
 
   authUrl() {
-    const appkey = this.config.config.dropbox.appKey
+    const appkey = this.appData.config.dropbox.appKey
     const redirectUri = encodeURI(window.location.href)
     const url = `${DBX_OAUTH2_URL}?client_id=${appkey}&response_type=token&redirect_uri=${redirectUri}`
     return url
@@ -30,7 +30,7 @@ export default class DropboxAPI {
   }
 
   // fetchApi(url, data = {}) {
-  //   const access_token = this.config.config.dropbox.accessToken
+  //   const access_token = this.appData.config.dropbox.accessToken
   //   return fetch(url, {
   //     method: 'POST',
   //     headers: {
@@ -42,7 +42,7 @@ export default class DropboxAPI {
   // }
 
   uploadData (path, data = {}) {
-    const access_token = this.config.config.dropbox.accessToken
+    const access_token = this.appData.config.dropbox.accessToken
 
     if( !access_token ) { return }
 
@@ -61,7 +61,7 @@ export default class DropboxAPI {
   }
 
   downloadData(path) {
-    const access_token = this.config.config.dropbox.accessToken
+    const access_token = this.appData.config.dropbox.accessToken
 
     if( !access_token ) { return {} }
 

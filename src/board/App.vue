@@ -9,14 +9,14 @@
     .thread.header
       .title タイトル
       .count レス数
-    Thread(v-for="thread in threads" :thread="thread" :domain="domain" :board="board" :config="config" :key="thread.dat")
+    Thread(v-for="thread in threads" :thread="thread" :domain="domain" :board="board" :appData="appData" :key="thread.dat")
 </template>
 
 <script>
 document.title = 'e5- スレ一覧'
 
 import * as Util from 'lib/Utility.js'
-import ConfigManager from 'lib/ConfigManager.js'
+import AppDataManager from 'lib/AppDataManager.js'
 import AbstractBBS from 'lib/AbstractBBS'
 const bbs = new AbstractBBS
 import Thread from 'components/Thread.vue'
@@ -24,7 +24,7 @@ import Thread from 'components/Thread.vue'
 export default {
   data: function() {
     return {
-      config: new ConfigManager(),
+      appData: new AppDataManager(),
       domain: "",
       board: "",
       threads: [],
@@ -57,10 +57,10 @@ export default {
       this.threads = data['threads']
     },
     clear: function() {
-      this.config.setThreads(this.board, undefined)
+      this.appData.setThreads(this.board, undefined)
     },
     sortLogs: function() {
-      const logs = this.config._logs[this.board]
+      const logs = this.appData._logs[this.board]
       if(!logs){ return }
 
       Object.keys(logs).forEach((dat) => {

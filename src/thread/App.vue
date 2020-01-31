@@ -18,7 +18,7 @@
 document.title = 'e5 - Viewer'
 
 import * as Util from 'lib/Utility.js'
-import ConfigManager from 'lib/ConfigManager.js'
+import AppDataManager from 'lib/AppDataManager.js'
 import AbstractBBS from 'lib/AbstractBBS'
 const bbs = new AbstractBBS
 
@@ -28,7 +28,7 @@ import Comment from 'components/Comment.vue'
 export default {
   data: function() {
     return {
-      config: new ConfigManager(),
+      appData: new AppDataManager(),
       domain: '',
       subdomain: '',
       board: '',
@@ -59,12 +59,12 @@ export default {
     this.dat = dat
     this.name = thread['name']
     this.comments = comments
-    this.read = this.config.getLog(board, dat) || 1
+    this.read = this.appData.getLog(board, dat) || 1
 
     document.title = `e5 - ${this.name}`
 
     const uploadLogs = Util.debounce(() => {
-      this.config.uploadLogs()
+      this.appData.uploadLogs()
     }, 1000)
 
     this.observer = new IntersectionObserver((entries) => {
@@ -75,7 +75,7 @@ export default {
         if(entry.isIntersecting) {
           if(number > this.read) {
             this.read = number
-            this.config.setLog(this.board, this.dat, number)
+            this.appData.setLog(this.board, this.dat, number)
 
             uploadLogs() // debounced function
           }
@@ -98,8 +98,8 @@ export default {
       this.comments = data['comments']
     },
     clear: function() {
-      this.config.setLog(this.board, this.dat, undefined)
-      this.config.setCache(this.board, this.dat, undefined)
+      this.appData.setLog(this.board, this.dat, undefined)
+      this.appData.setCache(this.board, this.dat, undefined)
     }
   }
 }

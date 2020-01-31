@@ -5,23 +5,23 @@ div#app
   hr
   h1 e5
   h2 板一覧
-  Boards(:config="config")
+  Boards(:appData="appData")
   hr
   h2 設定
-  Config(:config="config")
+  Config(:appData="appData")
 </template>
 
 <script>
 document.title = "e5"
 
-import ConfigManager from "./lib/ConfigManager.js"
+import AppDataManager from "./lib/AppDataManager.js"
 import Boards from "./components/Boards.vue"
 import Config from "./components/Config.vue"
 
 export default {
   data: function() {
     return {
-      config: new ConfigManager()
+      appData: new AppDataManager()
     }
   },
   components: {

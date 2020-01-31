@@ -1,7 +1,7 @@
 <template lang="pug">
 div.boards
-  template(v-if="Object.keys(config.boards).length")
-    div(v-for="(subboards, category) in config.boards")
+  template(v-if="Object.keys(appData.boards).length")
+    div(v-for="(subboards, category) in appData.boards")
       div.board-category(@click="showCategory(category)") {{ category }}
       div(v-if="showStatuses[category]")
         div(v-for="board in subboards")
@@ -17,7 +17,7 @@ import AbstractBBS from 'lib/AbstractBBS.js'
 const bbs = new AbstractBBS()
 
 export default {
-  props: ['config'],
+  props: ['appData'],
   components: {
   },
   data: function() {
@@ -36,10 +36,10 @@ export default {
     },
     reloadBoards: async function() {
       const data = await bbs.getBoards()
-      this.config.boards = data
+      this.appData.boards = data
     },
     debug: function () {
-      console.log(this.config.boards)
+      console.log(this.appData.boards)
     }
   }
 }

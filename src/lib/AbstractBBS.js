@@ -1,14 +1,14 @@
 import { unescapeHTML } from 'lib/Utility.js'
-import ConfigManager from 'lib/ConfigManager.js'
+import AppDataManager from 'lib/AppDataManager.js'
 
-const config = new ConfigManager()
+const appData = new AppDataManager()
 
 export default class AbstractBBS {
   constructor() {
   }
 
   async getBoards() {
-    let url = config.config.bbs.boardsUrl
+    let url = appData.config.bbs.boardsUrl
     const res = await fetch(url, { mode: 'cors', credentials: 'include'})
     const data = await res.text()
 
@@ -32,7 +32,7 @@ export default class AbstractBBS {
   }
 
   async getThreads(domain, board) {
-    const data = config.getThreads(board)
+    const data = appData.getThreads(board)
     if (data) {
       return data
     } else {
@@ -42,12 +42,12 @@ export default class AbstractBBS {
 
   async reloadThreads(domain, board) {
     const data = await this.fetchThreads(domain, board)
-    config.setThreads(board, data)
+    appData.setThreads(board, data)
     return data
   }
 
   async fetchThreads(domain, board) {
-    let url = config.config.bbs.threadsUrl
+    let url = appData.config.bbs.threadsUrl
     url = url.replace('{{domain}}', domain)
     url = url.replace('{{board}}', board)
 
@@ -72,7 +72,7 @@ export default class AbstractBBS {
   }
 
   async getCache(domain, subdomain, board, dat) {
-    const data = config.getCache(board, dat)
+    const data = appData.getCache(board, dat)
     if(data) {
       return data
     } else {
@@ -82,12 +82,12 @@ export default class AbstractBBS {
 
   async reloadCache(domain, subdomain, board, dat) {
     const data = await this.fetchCache(domain, subdomain, board, dat)
-    config.setCache(board, dat, data)
+    appData.setCache(board, dat, data)
     return data
   }
 
   async fetchCache(domain, subdomain, board, dat) {
-    let url = config.config.bbs.cacheUrl
+    let url = appData.config.bbs.cacheUrl
     url = url.replace('{{domain}}', domain)
     url = url.replace('{{subdomain}}', subdomain)
     url = url.replace('{{board}}', board)

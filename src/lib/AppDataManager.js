@@ -6,7 +6,7 @@ import { deepAssign } from 'lib/Utility.js'
 
 const CONFIG_PATH = "./config.default.json"
 
-export default class ConfigManager {
+export default class AppDataManager {
   constructor() {
     // 板情報
     if (localStorage.boards) {

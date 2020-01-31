@@ -11,7 +11,7 @@
 <script>
 export default {
   // FIX: domainとかboard受け取るのがイマイチ。log取り出すために使う
-  props: ['thread', 'config', 'domain', 'board'],
+  props: ['thread', 'appData', 'domain', 'board'],
   data: function() {
     return {
     }
@@ -19,7 +19,7 @@ export default {
   computed: {
     isRead: function() {
       // FIX: logsのインターフェース見直す
-      const logs = this.config._logs[this.board]
+      const logs = this.appData._logs[this.board]
       if(!logs){ return false }
 
       const index = Object.keys(logs).indexOf(this.thread.dat)
@@ -27,7 +27,7 @@ export default {
     },
     readNumber: function() {
       // FIX: logsのインターフェース見直す
-      const logs = this.config._logs[this.board]
+      const logs = this.appData._logs[this.board]
       if(!logs){ return false }
 
       return logs[this.thread.dat]
@@ -45,7 +45,7 @@ export default {
     },
     clear: function() {
       console.log(this.thread)
-      this.config.setLog(this.board, this.thread.dat, undefined)
+      this.appData.setLog(this.board, this.thread.dat, undefined)
     },
   }
 }
